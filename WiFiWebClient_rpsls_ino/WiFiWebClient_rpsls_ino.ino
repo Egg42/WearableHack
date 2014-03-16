@@ -24,21 +24,48 @@
 #include <SPI.h>
 #include <WiFi.h>
 
-char ssid[] = "TeamAwesome"; //  your network SSID (name) 
-char pass[] = "teamawesome"; //  your network SSID (name) 
+
+//****************************************
+//DECLARE CONNECTION INFO
+//*****************************************
+
+char ssid[] = "TeamAwesome"; //  your network SSID (name) //whoare you connecting to?
+char pass[] = "teamawesome"; //  Your network password, hardcode i guess
 int keyIndex = 0;            // your network key Index number (needed only for WEP)
+
+//Initialize an IP adress object to have
+IPAddress server(192,168,1,2);  
+int status = WL_IDLE_STATUS;
+
+//*****************************************
+//DECLARE INPUT OUT VARIABLES 
+//**************************************
+//varables in these arrays allow for interacting with D0-D12
+//in the case of needing button states, you would set them from the inputs array
+
+//in the case you need to set HIGH or LOW on an output, use the outputs array
+//In case you need to READ the state of an input, use the inputs array
+//ALL OF THESE 14 SIZE ARRAYS MAKE IT EASY TO USE i IN A FOR LOOP TO REFER TO (D0-D13)
+
+int inputs[14];//inputs are buttons
+int outputs[14];//outputs are like lights
+
+//later there will be loops that set these pins (D0-D13) if your pin is true in isInput, then you will
+//be set to input. these arrays should ALWAYS be the opposite of each other to ensure the pin setup is correct
+boolean isInput[14] = {false,false,true,true,true,true,true,true,true,true,true,true,true, false};        //pin 13 (D13) is designated an output on
+boolean isOutput[14] = {true,true,false,false,false,false,false,false,false,false,false,false,false,true};//Galileo itself. true on isOutput, false on isInput
+
 int buttonState = 0;         // variable for reading the pushbutton status
 
-int status = WL_IDLE_STATUS;
-// if you don't want to use DNS (and reduce your sketch size)
-// use the numeric IP instead of the name for the server:
-IPAddress server(192,168,1,2);  // numeric IP for Google (no DNS)
-//char server[] = "www.google.com";    // name address for Google (using DNS)
-
-// Initialize the Ethernet client library
-// with the IP address and port of the server 
-// that you want to connect to (port 80 is default for HTTP):
+//Lastly, we will create an instance of WiFiClient to allow out
+//Galileo to be the client of some Wifi Server
 WiFiClient client;
+
+
+
+//***********************************
+//BEGIN setup
+//***********************************
 
 void setup() {
   //Initialize serial and wait for port to open:
