@@ -33,7 +33,8 @@ char ssid[] = "TeamAwesome"; //  your network SSID (name) //whoare you connectin
 char pass[] = "teamawesome"; //  Your network password, hardcode i guess
 int keyIndex = 0;            // your network key Index number (needed only for WEP)
 
-//Initialize an IP adress object to have
+//Initialize an IP adress object to have, this particular object will be used when you
+//actually attempt to connect later
 IPAddress server(192,168,1,2);  
 int status = WL_IDLE_STATUS;
 
@@ -104,7 +105,7 @@ void setup() {
     Serial.println("connected to server");
     // Make a HTTP request:
 //  client.println("GET /search?q=arduino HTTP/1.1");
-  client.println("GET /index.php HTTP/1.1");
+  client.println("POST / \"HEllo Doawg!\" HTTP/1.1");
   client.println("Host: www.google.com");
   //  client.println("Connection: close");
   //  client.println();
