@@ -1,3 +1,26 @@
+/*
+  Web client
+ 
+ This sketch connects to a website 
+ using a WiFi shield.
+ This example is written for a network using WPA encryption. For 
+ WEP or WPA, change the Wifi.begin() call accordingly.
+ 
+ This example is written for a network using WPA encryption. For 
+ WEP or WPA, change the Wifi.begin() call accordingly.
+ 
+ Circuit:
+ * WiFi shield attached
+
+ created 13 July 2010
+ by dlf (Metodo2 srl)
+ modified 31 May 2012
+ by Tom Igoe
+ 
+ modified 18 March 2014
+ by Michial Green II
+ */
+
 #include <SPI.h>
 #include <WiFi.h>
 
@@ -43,28 +66,6 @@ IPAddress server(192,168,1,2);
 int status = WL_IDLE_STATUS;
 
 int PORT = 80;
-
-//*****************************************
-//DECLARE INPUT OUT VARIABLES 
-//**************************************
-//varables in these arrays allow for interacting with D0-D12
-//in the case of needing button states, you would set them from the inputs array
-
-//in the case you need to set HIGH or LOW on an output, use the outputs array
-//In case you need to READ the state of an input, use the inputs array
-//ALL OF THESE 14 SIZE ARRAYS MAKE IT EASY TO USE i IN A FOR LOOP TO REFER TO (D0-D13)
-
-const int numPins = 14;
-int inputs[numPins];//inputs are buttons
-int outputs[numPins];//outputs are like lights
-
-//later there will be loops that set these pins (D0-D13) if your pin is true in isInput, then you will
-//be set to input. these arrays should ALWAYS be the opposite of each other to ensure the pin setup is correct
-boolean isInput[numPins] = {false,false,true,true,true,true,true,true,true,true,false,false,false, false};        //pin 13 (D13) is designated an output on
-boolean isOutput[numPins] = {false,false,false,false,false,false,false,false,false,false,true,true,true,true};//Galileo itself. true on isOutput, false on isInput
-
-int buttonState = 0;  // variable for reading the pushbutton status
-
 //Lastly, we will create an instance of WiFiClient to allow out
 //Galileo to be the client of some Wifi Server
 WiFiClient client;
