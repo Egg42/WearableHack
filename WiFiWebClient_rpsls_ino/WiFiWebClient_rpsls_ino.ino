@@ -62,13 +62,13 @@ const int buttonCD = 6;
 //DECLARE CONNECTION INFO
 //*****************************************
 
-char ssid[] = "TeamAwesome"; //  your network SSID (name) //whoare you connecting to?
-char pass[] = "teamawesome"; //  Your network password, hardcode i guess
+char ssid[] = "visible"; //  your network SSID (name) //whoare you connecting to?
+char pass[] = "nikedog6150"; //  Your network password, hardcode i guess
 int keyIndex = 0;            // your network key Index number (needed only for WEP)
 
 //Initialize an IP adress object to have, this particular object will be used when you
 //actually attempt to connect later
-IPAddress server(192,168,1,2);  
+IPAddress server(50,184,225,93);  
 int status = WL_IDLE_STATUS;
 
 int PORT = 80;
@@ -121,7 +121,7 @@ void setup() {
     Serial.println("connected to server");
   
   // Send the gesture tot he server
-  sendGesture(client, 9001, "ROCK");  
+  sendGesture(client, 9001, "Rock");  
   }
 }
 
@@ -169,9 +169,3 @@ void printWifiStatus() {
   Serial.print(rssi);
   Serial.println(" dBm");
 }
-
-
-
-
-
-
