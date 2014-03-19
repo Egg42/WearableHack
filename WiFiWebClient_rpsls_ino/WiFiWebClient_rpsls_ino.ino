@@ -24,6 +24,12 @@
 #include <SPI.h>
 #include <WiFi.h>
 
+//if you are actually in range of the raspberry pie, and want to connect
+//use IP address: 192.168.1.2
+//but if you connect over the web use 
+//ip address 50.184.225.93
+
+
 //This function will send your player number and gesture to the server
 void sendGesture(WiFiClient &client, int playernum, String gesture){
     String get = "Get /rps.php?p=";
@@ -32,11 +38,11 @@ void sendGesture(WiFiClient &client, int playernum, String gesture){
            get += gesture;
            get += " HTTP/1.1";
     Serial.println(get);
-    Serial.println("host: 192.168.1.2");
+    Serial.println("host: 50.184.225.93");
     Serial.println("Connection: close");
     Serial.println();
     client.println("GET /rps.php?p=5&t=rock HTTP/1.1");
-    client.println("host: 192.168.1.2");
+    client.println("host: 50.184.225.93");
     client.println("Connection: close");
     client.println();
 }
