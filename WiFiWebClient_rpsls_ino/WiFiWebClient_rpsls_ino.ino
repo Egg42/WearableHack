@@ -1,61 +1,23 @@
-
-/*
-  Web client
- 
- This sketch connects to a website (http://www.google.com)
- using a WiFi shield.
- 
- This example is written for a network using WPA encryption. For 
- WEP or WPA, change the Wifi.begin() call accordingly.
- 
- This example is written for a network using WPA encryption. For 
- WEP or WPA, change the Wifi.begin() call accordingly.
- 
- Circuit:
- * WiFi shield attached
- 
- created 13 July 2010
- by dlf (Metodo2 srl)
- modified 31 May 2012
- by Tom Igoe
- */
- 
- #define ROCK 2
- #define PAPER 3
- #define SCISSORS 4
- #define LIZARD 5
- #define SPOCK 6
-
 #include <SPI.h>
 #include <WiFi.h>
 
-int getGesture(){
-  if(digitalRead(2)==HIGH){return ROCK;}
-   if(digitalRead(3)==HIGH){return PAPER;}
-    if(digitalRead(4)==HIGH){return SCISSORS;}
-     if(digitalRead(5)==HIGH){return LIZARD;}
-      if(digitalRead(6)==HIGH){return SPOCK;}
+//This function will send your player number and gesture to the server
+void sendGesture(WiFiClient &client, int playernum, String gesture){
+    String get = "Get /rps.php?p=";
+           get += playernum;
+           get += "&p=";
+           get += gesture;
+           get += " HTTP/1.1";
+    Serial.println(get);
+    Serial.println("host: 192.168.1.2");
+    Serial.println("Connection: close");
+    Serial.println();
+    client.println("GET /rps.php?p=5&t=rock HTTP/1.1");
+    client.println("host: 192.168.1.2");
+    client.println("Connection: close");
+    client.println();
 }
 
-void checkButtonState(int inPin, int outPin = 13){
-   int buttonState = 0;
-  
-    buttonState = digitalRead(inPin);
-   if(buttonState == HIGH){
-     switch(inPin){
-        case ROCK:Serial.println("ROCK");break;
-        case PAPER:Serial.println("PAPER");break;
-        case SCISSORS:Serial.println("Scissors");break;
-        case LIZARD:Serial.println("LIZARD");break;
-        case SPOCK: Serial.println("SPOCK"); break;
-     }
-     delay(1000);
-   digitalWrite(outPin,HIGH);
-   } 
-   else{
-    digitalWrite(outPin,LOW); 
-   }
-}
 
 //DECLARE GAME VARIABLES
 int gameState = 0;
@@ -64,9 +26,6 @@ int gameState = 0;
 const int buttonCD = 6;
 //This character array is going to hold the current
 //gesture as gained by the get Gesture function
-int currentGesture = ROCK;
-
-const int LEDw = 9, LEDy = 10, LEDr = 11, LEDg = 12, LEDo = 13;
 
 
 
@@ -121,20 +80,7 @@ void setup() {
   Serial.begin(9600); 
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
-  }
-  
-  //Set all of the pin modes based on is output and is input
-  for (int i=0;i<numPins;i++){//these pins are for INPUTS
-     if(isInput[i]){
-        pinMode(i,INPUT); 
-     }
-  }
-  for(int c = 0; c < numPins; c++){//these pins are used for OUTPUTS
-    if(isOutput[c]){
-       pinMode(c,OUTPUT); 
-
-    }
-  }  
+  } 
   
   //ERROR CHECKING IS HERE!!
   // check for the presence of the shield:
@@ -167,11 +113,8 @@ void setup() {
   if (client.connect(server, 80)) {
     Serial.println("connected to server");
   
-  // Make a HTTP request:    
-  client.println("GET /rps.php?p=5&t=rock HTTP/1.1");
-  client.println("host: 192.168.1.2");
-  client.println("Connection: close");
-  client.println();
+  // Send the gesture tot he server
+  sendGesture(client, 9001, "ROCK");  
   }
 }
 
@@ -200,12 +143,6 @@ void loop() {
     // do nothing forevermore:
     //while(true);
   }
-  
- checkButtonState(ROCK,13);
- checkButtonState(PAPER,13);
- checkButtonState(SCISSORS,13);
- checkButtonState(LIZARD,13);
- checkButtonState(SPOCK,13);
 }
 
 
