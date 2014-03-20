@@ -1,6 +1,7 @@
-/*
+/*********************************************
  Rock Paper Scissors Lizzard Spock
- Glove Code
+ *********************************************
+ Galileo Game code complete!
  created 2005
  by DojoDave <http://www.0j0.org>
  modified 30 Aug 2011
@@ -9,15 +10,21 @@
  by Max Bolling
  This example code is in the public domain.
  modified March 19th
- by Michial Green II & MAx Bolling (CCC)
+ by Michial Green II & Maximilian Bolling (ContraCostaCollege)
  
  http://www.arduino.cc/en/Tutorial/Button
  */
 
+/**********************************************
+GLOBAL SPACE STARTS HERE!!!
+Includes, global variables, and functions!
+**********************************************/
 
-#include <SPI.h>
-#include <WiFi.h>
 
+#include <SPI.h>    //the wifi shield is communicaed to through SPI.h *Required!
+#include <WiFi.h>   //Wifi.h is needed to use the actual wifi shield
+
+//a funtion that prints the current state of the wifi
 void printWifiStatus() {
   // print the SSID of the network you're attached to:
   Serial.print("SSID: ");
@@ -36,34 +43,38 @@ void printWifiStatus() {
 }
 
 //This function will send your player number and gesture to the server
+//requires a client object that is initialized to a network to be usful
 void sendGesture(WiFiClient &client, int playernum, String gesture){
   
+  //must declare an IPAddres because no other is in sope.
   IPAddress server(192,168,1,2);
   Serial.println("\nStarting connection to server...");
   // if you get a connection, report back via serial:
   if (client.connect(server, 80)) {    
     Serial.println("connected to server");
-  }
+  //build a string for the get commmand.
+  //send EXACTLY what your srver expects!
     String get = "Get /rps.php?p=";
            get += playernum;
-           get += "&p=";
+           get += "&t=";
            get += gesture;
            get += " HTTP/1.1";
+    //send get over Seral to verify the string
     Serial.println(get);
     Serial.println("host: 192.168.1.2");
-    Serial.println("Connection: close");
     Serial.println();
-    client.println("GET /rps.php?p=5&t=rock HTTP/1.1");
+    //send ?get
+    client.println(get);
     client.println("host: 192.168.1.2");
-    client.println("Connection: close");
     client.println();
+  }
 }
 //****************************************
 //DECLARE CONNECTION INFO
 //*****************************************
 
-char ssid[] = "TeamAwesome"; //  your network SSID (name) //whoare you connecting to? TeamAwesome
-char pass[] = "teamawesome"; //  Your network password, hardcode i guess, teamawesome
+char ssid[] = "TeamAwesome"; //  your network SSID (name) //whoare you connecting to? TeamAwesome is our network SSID
+char pass[] = "teamawesome"; //  Your network password, hardcode i guess, teamawesome 
 int keyIndex = 0;            // your network key Index number (needed only for WEP)
 
 //Initialize an IP adress object to have, this particular object will be used when you
@@ -71,6 +82,7 @@ int keyIndex = 0;            // your network key Index number (needed only for W
 IPAddress server(192,168,1,2);  
 int status = WL_IDLE_STATUS;
 
+//e choose port 80, the standar internet pirt
 int PORT = 80;
 //Lastly, we will create an instance of WiFiClient to allow out
 //Galileo to be the client of some Wifi Server
@@ -122,6 +134,7 @@ String checkButtonState(int inputPinNumber){//can be void when messanger is adde
      Serial.println(getMoves(inputPinNumber));    
      return getMoves(inputPinNumber);//Put string messenger output here
   } 
+  return "";
 }
 
 
