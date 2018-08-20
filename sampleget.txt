@@ -1,0 +1,1 @@
+GET/ rps.php?p=num&t=move
